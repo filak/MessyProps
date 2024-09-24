@@ -33,7 +33,7 @@ There are 3 commands/actions available:
 
      $ py props_check.py sort --indir /messy_project/configs --output merged_configs.properties
 
-### Compare two messages_*.properties files 
+### Compare two messages_*.properties files to check
 
 - for differing keys:
 
