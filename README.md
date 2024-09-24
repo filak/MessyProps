@@ -34,9 +34,15 @@ There are 3 commands/actions available:
 
      $ py props_check.py clean --indir /messy_project/configs --output merged_configs.properties
 
-### Compare two messages_*.properties files
+### Compare two messages_*.properties files 
+
+- for differing keys:
 
      $ py props_check.py compare messages_en.properties messages_cs.properties
+
+- for differing keys and values:
+
+     $ py props_check.py compare new/messages_en.properties old/messages_en.properties --values 
 
 ### Locate keys from a props file in a git repository
 
