@@ -1,5 +1,4 @@
 # MessyProps
-Unmessing Java *.properties files
 
 Java properties files can get messy. With **props_check.py** script you can check the properties files.
 
