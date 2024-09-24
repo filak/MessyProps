@@ -29,11 +29,11 @@ There are 3 commands/actions available:
 
 ## Examples
 
-### Sort, check for duplicates and merge several config *.properties files
+### Sort, check for duplicates and merge several config files
 
      $ py props_check.py sort --indir /messy_project/configs --output merged_configs.properties
 
-### Compare two messages_*.properties files to check
+### Compare two props files to check
 
 - for differing keys:
 
@@ -41,7 +41,7 @@ There are 3 commands/actions available:
 
 - for differing keys and values:
 
-       $ py props_check.py compare new/messages_en.properties old/messages_en.properties --values 
+       $ py props_check.py compare new/config.properties old/config.properties --values 
 
 ### Locate keys from a props file in a git repository
 
