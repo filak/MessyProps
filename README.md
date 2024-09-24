@@ -38,15 +38,15 @@ There are 3 commands/actions available:
 
 - for differing keys:
 
-     $ py props_check.py compare messages_en.properties messages_cs.properties
+       $ py props_check.py compare messages_en.properties messages_cs.properties
 
 - for differing keys and values:
 
-     $ py props_check.py compare new/messages_en.properties old/messages_en.properties --values 
+       $ py props_check.py compare new/messages_en.properties old/messages_en.properties --values 
 
 ### Locate keys from a props file in a git repository
 
-     $ py props_check.py locate messages_en.properties /messy_project --branch main --subdir src --filext java,jsp,vm
+     $ py props_check.py locate config.properties /messy_project/repo --branch main --subdir src --filext java,jsp,vm
 
 > A key is currently being located using **git grep** command - ie:
 
