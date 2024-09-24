@@ -23,15 +23,15 @@ The script might be useful for:
 
 There are 3 commands/actions available:
 
-     $ py props_check.py clean -h
+     $ py props_check.py sort -h
      $ py props_check.py compare -h
      $ py props_check.py locate -h
 
 ## Examples
 
-### Deduplicate, sort and merge several config *.properties files
+### Sort, check for duplicates and merge several config *.properties files
 
-     $ py props_check.py clean --indir /messy_project/configs --output merged_configs.properties
+     $ py props_check.py sort --indir /messy_project/configs --output merged_configs.properties
 
 ### Compare two messages_*.properties files 
 
