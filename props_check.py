@@ -41,6 +41,7 @@ def main():
                                            description='It is advisable to clean the files before comparing')
     parser_compare.add_argument('infile_a', help="Input - path to *.properties file")
     parser_compare.add_argument('infile_b', help="Input - path to *.properties file")
+    parser_compare.add_argument('--values', help="Compare both keys and values")
 
     parser_compare = subparsers.add_parser('locate',
                                            help='Lookup and locate props keys in source code',
@@ -98,11 +99,12 @@ def props_compare(args):
         print('No properties found in: ', args.infile_b, '\n')
         return
 
-    differing_keys = compare_dict_values(properties_a, properties_b)
+    if args.values:
+        differing_values = compare_dict_values(properties_a, properties_b)
 
-    print('\n*** Different values: ')
-    for key, val1, val2 in differing_keys:
-        print(f"{key}={val1} | {val2}")
+        print('\n*** Different values: ')
+        for key, val1, val2 in differing_values:
+            print(f"{key}={val1} | {val2}")
 
     missing_in_dict1, missing_in_dict2 = compare_dict_keys(properties_a, properties_b)
 
