@@ -1,7 +1,7 @@
 # MessyProps
 UnMessing Java *.properties files
 
-Java properties files can get messy. Using this script you can clean, sort, merge, compare the properties files.
+Java properties files can get messy. Using this script you can check the properties files.
 
 The script might be useful for:
 - checking local config files for new/obsolete keys - ie when upgrading to a new version
