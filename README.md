@@ -1,7 +1,7 @@
 # MessyProps
 UnMessing Java *.properties files
 
-Java properties files can get messy. Using this script you can clean(deduplicate), sort, merge, compare the properties files.
+Java properties files can get messy. Using this script you can clean, sort, merge, compare the properties files.
 
 The script might be useful for:
 - checking local config files for new/obsolete keys - ie when upgrading to a new version
@@ -30,7 +30,7 @@ There are 3 commands/actions available:
 
 ## Examples
 
-### Clean and sort and merge several config *.properties files
+### Deduplicate, sort and merge several config *.properties files
 
      $ py props_check.py clean --indir /messy_project/configs --output merged_configs.properties
 
@@ -38,7 +38,7 @@ There are 3 commands/actions available:
 
      $ py props_check.py compare messages_en.properties messages_cs.properties
 
-### Locate keys in a git repository
+### Locate keys from a props file in a git repository
 
      $ py props_check.py locate messages_en.properties /messy_project --branch main --subdir src --filext java,jsp,vm
 
