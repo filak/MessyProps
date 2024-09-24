@@ -25,23 +25,23 @@ def main():
     parser = argparse.ArgumentParser(description='Input files are expected to be in UTF-8 encoding.')
     subparsers = parser.add_subparsers(dest='action', help='Available commands')
 
-    parser_clean = subparsers.add_parser('clean',
-                                         help='Clean and sort *.props files',
+    parser_sort = subparsers.add_parser('sort',
+                                         help='Sort *.props files',
                                          description='Using indir+output file causes merging all the props into the output file.')
-    group1 = parser_clean.add_mutually_exclusive_group()
+    group1 = parser_sort.add_mutually_exclusive_group()
     group1.add_argument('--infile', help="Input - path to *.properties file")
     group1.add_argument('--indir', help="Input - path to directory with *.properties files")
-    parser_clean.add_argument('--output', help="Output - file path Or RELATIVE sub-directory path")
-    parser_clean.add_argument('--add_spaces', action='store_true', help='Add spaces around = for better readability')
-    parser_clean.add_argument('--strip_comments', action='store_true', help='Strip comments')
-    parser_clean.add_argument('--utf8', action='store_true', help='Convert values to UTF-8')
+    parser_sort.add_argument('--output', help="Output - file path Or RELATIVE sub-directory path")
+    parser_sort.add_argument('--add_spaces', action='store_true', help='Add spaces around = for better readability')
+    parser_sort.add_argument('--strip_comments', action='store_true', help='Strip comments')
+    parser_sort.add_argument('--utf8', action='store_true', help='Convert values to UTF-8')
 
     parser_compare = subparsers.add_parser('compare',
                                            help='Compare keys and/or values in two props files',
-                                           description='It is advisable to clean the files before comparing')
+                                           description='It is advisable to sort the files before comparing')
     parser_compare.add_argument('infile_a', help="Input - path to *.properties file")
     parser_compare.add_argument('infile_b', help="Input - path to *.properties file")
-    parser_compare.add_argument('--values', help="Compare both keys and values")
+    parser_compare.add_argument('--values', action='store_true', help="Compare both keys and values")
 
     parser_compare = subparsers.add_parser('locate',
                                            help='Lookup and locate props keys in source code',
@@ -55,8 +55,8 @@ def main():
 
     args = parser.parse_args()
 
-    if args.action == 'clean':
-        props_clean(args)
+    if args.action == 'sort':
+        props_sort(args)
     elif args.action == 'compare':
         props_compare(args)
     elif args.action == 'locate':
@@ -65,9 +65,9 @@ def main():
         print('Action NOT supported !')
 
 
-def props_clean(args):
+def props_sort(args):
 
-    print("\n*** Properties cleaning ***\n")
+    print("\n*** Properties sorting ***")
 
     if args.infile:
         parse_file(args.infile, output=args.output,
@@ -87,7 +87,9 @@ def props_clean(args):
 
 def props_compare(args):
 
-    print("\n*** Properties comparing ***\n")
+    print("\n*** Properties comparing ***")
+    print('Input file : ', args.infile_a)
+    print('Input file : ', args.infile_b)
 
     properties_a = load_properties_file(args.infile_a)
     if not properties_a:
@@ -110,17 +112,19 @@ def props_compare(args):
 
     headers = 'Human |Key=Value'
 
-    print('\n*** Keys missing in: ', args.infile_a)
-    print(headers)
-    for key in missing_in_dict1:
-        value_tuple = properties_b[key][0]
-        print(decode_unicode_escapes(key).replace('\\ ', ' '), '|' + key + '=' + value_tuple[0])
+    if missing_in_dict1:
+        print('\n*** Keys missing in: ', args.infile_a)
+        print(headers)
+        for key in missing_in_dict1:
+            value_tuple = properties_b[key][0]
+            print(decode_unicode_escapes(key).replace('\\ ', ' '), '|' + key + '=' + value_tuple[0])
 
-    print('\n*** Keys missing in: ', args.infile_b)
-    print(headers)
-    for key in missing_in_dict2:
-        value_tuple = properties_a[key][0]
-        print(decode_unicode_escapes(key).replace('\\ ', ' '), '|' + key + '=' + value_tuple[0])
+    if missing_in_dict2:
+        print('\n*** Keys missing in: ', args.infile_b)
+        print(headers)
+        for key in missing_in_dict2:
+            value_tuple = properties_a[key][0]
+            print(decode_unicode_escapes(key).replace('\\ ', ' '), '|' + key + '=' + value_tuple[0])
 
 
 def props_locate(args):
