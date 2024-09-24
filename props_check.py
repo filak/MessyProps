@@ -37,15 +37,15 @@ def main():
     parser_sort.add_argument('--utf8', action='store_true', help='Convert values to UTF-8')
 
     parser_compare = subparsers.add_parser('compare',
-                                           help='Compare keys and/or values in two props files',
-                                           description='It is advisable to sort the files before comparing')
+                                            help='Compare keys and/or values in two props files',
+                                            description='It is advisable to sort the files before comparing')
     parser_compare.add_argument('infile_a', help="Input - path to *.properties file")
     parser_compare.add_argument('infile_b', help="Input - path to *.properties file")
     parser_compare.add_argument('--values', action='store_true', help="Compare both keys and values")
 
     parser_compare = subparsers.add_parser('locate',
-                                           help='Lookup and locate props keys in source code',
-                                           description='You need Git installed [git grep] and a local git repository')
+                                            help='Lookup and locate props keys in source code',
+                                            description='You need Git installed [git grep] and a local git repository')
     parser_compare.add_argument('infile', help="Input - path to *.properties file")
     parser_compare.add_argument('repo_path', help="Repository FULL path")
     parser_compare.add_argument('--branch', help="Scope lookup to a specific branch")
