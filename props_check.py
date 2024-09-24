@@ -49,8 +49,7 @@ def main():
     parser_compare.add_argument('repo_path', help="Repository FULL path")
     parser_compare.add_argument('--branch', help="Scope lookup to a specific branch")
     parser_compare.add_argument('--subdir', help="Scope lookup to a specific sub-directory")
-    parser_compare.add_argument('--filext', help="Filter by file types extensions - comma delimited list",
-                                            default="java,js,jsp,tld,xml,xsl")
+    parser_compare.add_argument('--filext', help="Filter by file types extensions - comma delimited list ie: java,js,jsp,tld,xml,xsl,vm")
     parser_compare.add_argument('--multi', action='store_true', help='Use multiprocessing for lookups')
 
     args = parser.parse_args()
