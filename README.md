@@ -4,15 +4,15 @@ UnMessing Java *.properties files
 Java properties files can get messy. Using this script you can clean, sort, merge, compare the props files.
 
 The script might be useful for:
-- checking local config files when upgrading to a new version
-- checking messages*.properties for new/obsolete translations
+- checking local config files for new/obsolete keys - ie when upgrading to a new version
+- checking messages*.properties for new/obsolete keys - -dtto-
 
 ## Installation
 
-> You need Python 3.12+ and Git
+> Prerequisites - You need to have installed: **Python 3.12+** and **Git** [with git grep]
 
 1. Download the script into a directory
-2. Install requirements - currently only: tqdm  
+2. Install requirements - currently only: **tqdm**
 
        $ pip install -r requirements.txt
 
@@ -22,7 +22,7 @@ The script might be useful for:
 
 ## Usage
 
-There are 3 commands/actions available
+There are 3 commands/actions available:
 
      $ py props_check.py clean -h
      $ py props_check.py compare -h
@@ -42,7 +42,7 @@ There are 3 commands/actions available
 
      $ py props_check.py locate messages_en.properties /messy_project --branch main --subdir src --filext java,jsp,vm
 
-> Keys are being located using git grep command - ie:
+> A key is being located using **git grep** command - ie:
 
      $ git grep -c "<key>" <branch> -- *.java *.vm 
      $ git grep -c "<key>" <branch> -- <subdir/>*.java <subdir/>*.vm
