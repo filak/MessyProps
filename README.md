@@ -14,11 +14,11 @@ The script might be useful for:
 1. Download the script into a directory
 2. Install requirements - currently only: tqdm  
 
-     $ pip install -r requirements.txt
+       $ pip install -r requirements.txt
 
 3. Run the script - show help
 
-     $ py props_check.py -h
+       $ py props_check.py -h
 
 ## Usage
 
@@ -41,3 +41,8 @@ There are 3 commands/actions available
 ### Locate keys in a git repository
 
      $ py props_check.py locate messages_en.properties /messy_project --branch main --subdir src --filext java,jsp,vm
+
+> Keys are being located using git grep command - ie:
+
+     $ git grep -c "<key>" <branch> -- *.java *.vm 
+     $ git grep -c "<key>" <branch> -- <subdir/>*.java <subdir/>*.vm
