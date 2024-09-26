@@ -34,21 +34,32 @@ There are 3 commands/actions available:
 
      $ py props_check.py sort --indir /messy_project/configs --output merged_configs.properties
 
-### Compare two props files to check
+### Compare two props files
 
-- for differing keys:
+- to check for differing keys:
 
        $ py props_check.py compare messages_en.properties messages_cs.properties
 
-- for differing keys and values:
+- to check for differing keys and values:
 
        $ py props_check.py compare new/config.properties old/config.properties --values 
 
-### Locate keys from a props file in a git repository
+### Locate keys from a props file 
+
+- in a git repository tree
 
      $ py props_check.py locate config.properties /messy_project/repo --branch main --subdir src --filext java,jsp,vm
 
+- in a git repository tree - include untracked files
+
+     $ py props_check.py locate config.properties /messy_project/repo --untracked
+
+- in any directory
+
+    $ py props_check.py locate config.properties /messy_project/mydir --noindex
+
 > A key is currently being located using **git grep** command - ie:
 
+     $ git grep -c [--untracked | --no-index] <key>
      $ git grep -c <key> <branch> -- *.java *.vm 
      $ git grep -c <key> <branch> -- <subdir/>*.java <subdir/>*.vm
