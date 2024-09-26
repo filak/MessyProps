@@ -7,7 +7,7 @@ from pathlib import Path
 from tqdm import tqdm
 
 appname = 'props_check'
-appversion = '0.1.1'
+appversion = '0.1.2'
 appdesc = 'Unmessing Java *.properties files'
 appauthor = 'MIT License | Copyright (c) 2024 Filip Kriz @filak'
 appusage = 'Help:   props_check.py -h \n'
@@ -48,14 +48,14 @@ def main():
                                             description='You need have Git installed [git grep] - https://git-scm.com/docs/git-grep')
     parser_compare.add_argument('infile', help="Input - path to *.properties file")
     parser_compare.add_argument('repo_path', help="Repository FULL path")
-    parser_compare.add_argument('--branch', help="Scope lookup to a specific branch")
+    parser_compare.add_argument('--branch', help="Scope lookup to a specific branch - for Git repos only")
     parser_compare.add_argument('--subdir', help="Scope lookup to a specific sub-directory")
     parser_compare.add_argument('--filext', help="Filter by file types extensions - comma delimited list ie: java,js,jsp,tld,xml,xsl,vm")
     parser_compare.add_argument('--multi', action='store_true', help='Use multiprocessing for lookups')
     parser_compare.add_argument('--notest', action='store_true', help='Exclude /test/ from results')
     group_options = parser_compare.add_mutually_exclusive_group()
     group_options.add_argument('--noindex', action='store_true', help='Use git-grep --no-index option - for repos NOT managed by Git')
-    group_options.add_argument('--untracked', action='store_true', help='Use git-grep --untracked option')
+    group_options.add_argument('--untracked', action='store_true', help='Use git-grep --untracked option - for Git repos only')
 
     args = parser.parse_args()
 
@@ -64,6 +64,10 @@ def main():
     elif args.action == 'compare':
         props_compare(args)
     elif args.action == 'locate':
+        if args.branch:
+            if args.noindex or args.untracked:
+                print('Do NOT use --branch together with either --noindex or --untracked options !')
+                return
         props_locate(args)
     else:
         print('Action NOT supported !')
