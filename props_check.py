@@ -9,7 +9,7 @@ from tqdm import tqdm
 appname = 'props_check'
 appversion = '0.1.1'
 appdesc = 'Unmessing Java *.properties files'
-appauthor = 'by Filip Kriz @filak'
+appauthor = 'MIT License | Copyright (c) 2024 Filip Kriz @filak'
 appusage = 'Help:   props_check.py -h \n'
 
 
