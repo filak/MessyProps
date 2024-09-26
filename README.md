@@ -58,7 +58,7 @@ There are 3 commands/actions available:
 
        $ py props_check.py locate config.properties /messy_project/mydir --noindex
 
-> A key is currently being located using **git grep** command - ie:
+> A key is currently being looked up using **git grep** command - ie:
 
      $ git grep -c [--untracked | --no-index] <key>
      $ git grep -c <key> <branch> -- *.java *.vm 
