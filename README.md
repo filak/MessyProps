@@ -16,7 +16,7 @@ The script might be useful for:
 
        $ pip install -r requirements.txt
 
-3. Check - run the script to show help:
+3. Run the script to show help:
 
        $ py props_check.py -h
 
