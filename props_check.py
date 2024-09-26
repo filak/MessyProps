@@ -7,7 +7,7 @@ from pathlib import Path
 from tqdm import tqdm
 
 appname = 'props_check'
-appversion = '0.1.0'
+appversion = '0.1.1'
 appdesc = 'Unmessing Java *.properties files'
 appauthor = 'by Filip Kriz @filak'
 appusage = 'Help:   props_check.py -h \n'
@@ -28,9 +28,9 @@ def main():
     parser_sort = subparsers.add_parser('sort',
                                          help='Sort *.props files',
                                          description='Using indir+output file causes merging all the props into the output file.')
-    group1 = parser_sort.add_mutually_exclusive_group()
-    group1.add_argument('--infile', help="Input - path to *.properties file")
-    group1.add_argument('--indir', help="Input - path to directory with *.properties files")
+    group_input = parser_sort.add_mutually_exclusive_group()
+    group_input.add_argument('--infile', help="Input - path to *.properties file")
+    group_input.add_argument('--indir', help="Input - path to directory with *.properties files")
     parser_sort.add_argument('--output', help="Output - file path Or RELATIVE sub-directory path")
     parser_sort.add_argument('--add_spaces', action='store_true', help='Add spaces around = for better readability')
     parser_sort.add_argument('--strip_comments', action='store_true', help='Strip comments')
@@ -45,13 +45,16 @@ def main():
 
     parser_compare = subparsers.add_parser('locate',
                                             help='Lookup and locate props keys in source code',
-                                            description='You need Git installed [git grep] and a local git repository')
+                                            description='You need have Git installed [git grep] - https://git-scm.com/docs/git-grep')
     parser_compare.add_argument('infile', help="Input - path to *.properties file")
     parser_compare.add_argument('repo_path', help="Repository FULL path")
     parser_compare.add_argument('--branch', help="Scope lookup to a specific branch")
     parser_compare.add_argument('--subdir', help="Scope lookup to a specific sub-directory")
     parser_compare.add_argument('--filext', help="Filter by file types extensions - comma delimited list ie: java,js,jsp,tld,xml,xsl,vm")
     parser_compare.add_argument('--multi', action='store_true', help='Use multiprocessing for lookups')
+    group_options = parser_compare.add_mutually_exclusive_group()
+    group_options.add_argument('--noindex', action='store_true', help='Use git-grep --no-index option - for repos NOT managed by Git')
+    group_options.add_argument('--untracked', action='store_true', help='Use git-grep --untracked option')
 
     args = parser.parse_args()
 
@@ -185,13 +188,22 @@ def props_locate(args):
     cwd_repo = args.repo_path.strip('/')
     pargs_all = []
 
-    # git grep -c "<key>" <branch> -- *.java *.js *.jsp *.tld *.xml *.xsl*
-    # git grep -c "<key>" <branch> -- <subdir/>*.java <subdir/>*.jsp ...
+    # git grep -c <key> <branch> -- *.java *.js *.jsp *.tld *.xml *.xsl*
+    # git grep -c <key> <branch> -- <subdir/>*.java <subdir/>*.jsp ...
 
     for key, kr in keys_lookup:
         pargs = ['git', 'grep', '-c']
-        pargs.append('"' + key + '"')
+        #pargs = ['git', 'grep', '-q']
+        if args.noindex:
+            pargs.append('--no-index')
+        elif args.untracked:
+            pargs.append('--untracked')
+
+        pargs.append(key)
+        #pargs.append(f"\"{key}\"")
+
         pargs += pargs_tail
+
         # print(' '.join(pargs))
         if key == kr:
             key_out = key
@@ -249,6 +261,7 @@ def props_locate(args):
             missing_cnt += 1
             if missing_cnt == 1:
                 missing_out.append(f"Searching command: {pargs_out}\n\n")
+            # missing_out.append(f"{pargs_out}")
             missing_out.append(f"{key_out}")
         missing_rep = Path(args.infile).name + '_missing.txt'
         save_output(missing_rep, '\n'.join(missing_out))
@@ -258,11 +271,20 @@ def props_locate(args):
 
 def grep_repo(key, pargs, cwd_repo):
 
-    res = subprocess.run(pargs, cwd=cwd_repo, check=False, capture_output=True, text=True, timeout=20)
+    #xres = subprocess.run(pargs, cwd=cwd_repo, check=False, capture_output=True)
+    #print(xres)
+
+    try:
+        res = subprocess.run(pargs, cwd=cwd_repo, check=True, capture_output=True, text=True, timeout=10)
+    except:
+        res = None
+
     pargs_out = ' '.join(pargs)
     if res:
         if res.stdout:
             return (True, key, pargs_out, res.stdout)
+        else:
+            return (True, key, pargs_out, None)
 
     return (False, key, pargs_out, None)
 
@@ -324,7 +346,7 @@ def parse_file(input_file, output=None, is_batch=False, strip_comments=False, ut
 def load_properties_file(file_path, utf8=False):
     try:
         properties = {}
-        with open(file_path, 'r', encoding='utf-8') as file:
+        with open(file_path, 'r', encoding='utf-8-sig') as file:
             comments = []
             long_line = False
             for line in file:
