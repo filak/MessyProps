@@ -3,7 +3,8 @@
 Java properties files can get messy. With **props_check.py** script you can check the properties files.
 
 The script might be useful for:
-- checking local config files for new/obsolete keys - ie when upgrading to a new version
+- checking for duplicate keys, comparing keys and values, locating keys in a local repository
+- checking local config files for new/obsolete keys - ie when upgrading a SW instance to a new version
 - checking messages*.properties for new/obsolete keys - -dtto-
 
 ## Installation
