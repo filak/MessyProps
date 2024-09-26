@@ -52,6 +52,7 @@ def main():
     parser_compare.add_argument('--subdir', help="Scope lookup to a specific sub-directory")
     parser_compare.add_argument('--filext', help="Filter by file types extensions - comma delimited list ie: java,js,jsp,tld,xml,xsl,vm")
     parser_compare.add_argument('--multi', action='store_true', help='Use multiprocessing for lookups')
+    parser_compare.add_argument('--notest', action='store_true', help='Exclude /test/ from results')
     group_options = parser_compare.add_mutually_exclusive_group()
     group_options.add_argument('--noindex', action='store_true', help='Use git-grep --no-index option - for repos NOT managed by Git')
     group_options.add_argument('--untracked', action='store_true', help='Use git-grep --untracked option')
@@ -244,11 +245,22 @@ def props_locate(args):
     if found:
         found_out = []
         found_cnt = 0
+
+        found_out.append(f"### Params: ")
+        for key, value in vars(args).items():
+            found_out.append(f"# {key}: {value}")
+
         for key_out, pargs_out, ctx in found:
             found_cnt += 1
             if found_cnt == 1:
-                found_out.append(f"Searching command: {pargs_out}\n\n")
-            found_out.append(f"{key_out}\n{ctx}\n")
+                found_out.append(f"## Lookup command: \n# {pargs_out}\n\n")
+            if ctx:
+                ctx_list = ctx.split('\n')
+                if args.notest:
+                    ctx_list = [item for item in ctx_list if "/test/" not in item]
+                ctx = '\n# '.join(ctx_list)
+
+            found_out.append(f"{key_out} \n# Hits: {len(ctx_list)}\n# {ctx}\n")
         found_rep = Path(args.infile).name + '_found.txt'
         save_output(found_rep, '\n'.join(found_out))
         print('Found keys : ', found_cnt)
@@ -257,10 +269,15 @@ def props_locate(args):
     if missing:
         missing_out = []
         missing_cnt = 0
+
+        missing_out.append(f"### Params: ")
+        for key, value in vars(args).items():
+            missing_out.append(f"# {key}: {value}")
+
         for key_out, pargs_out in missing:
             missing_cnt += 1
             if missing_cnt == 1:
-                missing_out.append(f"Searching command: {pargs_out}\n\n")
+                missing_out.append(f"## Lookup command: \n# {pargs_out}\n\n")
             # missing_out.append(f"{pargs_out}")
             missing_out.append(f"{key_out}")
         missing_rep = Path(args.infile).name + '_missing.txt'
