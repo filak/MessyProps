@@ -26,31 +26,31 @@ def main():
     subparsers = parser.add_subparsers(dest='action', help='Available commands')
 
     parser_sort = subparsers.add_parser('sort',
-                                         help='Sort *.props files',
-                                         description='Using indir+output file causes merging all the props into the output file.')
+                                        help='Sort *.props files',
+                                        description='Using indir+output file causes merging all the props into the output file.')
     group_input = parser_sort.add_mutually_exclusive_group()
-    group_input.add_argument('--infile', help="Input - path to *.properties file")
-    group_input.add_argument('--indir', help="Input - path to directory with *.properties files")
-    parser_sort.add_argument('--output', help="Output - file path Or RELATIVE sub-directory path")
+    group_input.add_argument('--infile', help='Input - path to *.properties file')
+    group_input.add_argument('--indir', help='Input - path to directory with *.properties files')
+    parser_sort.add_argument('--output', help='Output - file path Or RELATIVE sub-directory path')
     parser_sort.add_argument('--add_spaces', action='store_true', help='Add spaces around = for better readability')
     parser_sort.add_argument('--strip_comments', action='store_true', help='Strip comments')
     parser_sort.add_argument('--utf8', action='store_true', help='Convert values to UTF-8')
 
     parser_compare = subparsers.add_parser('compare',
-                                            help='Compare keys and/or values in two props files',
-                                            description='It is advisable to sort the files before comparing')
-    parser_compare.add_argument('infile_a', help="Input - path to *.properties file")
-    parser_compare.add_argument('infile_b', help="Input - path to *.properties file")
-    parser_compare.add_argument('--values', action='store_true', help="Compare both keys and values")
+                                           help='Compare keys and/or values in two props files',
+                                           description='It is advisable to sort the files before comparing')
+    parser_compare.add_argument('infile_a', help='Input - path to *.properties file')
+    parser_compare.add_argument('infile_b', help='Input - path to *.properties file')
+    parser_compare.add_argument('--values', action='store_true', help='Compare both keys and values')
 
     parser_compare = subparsers.add_parser('locate',
-                                            help='Lookup and locate props keys in source code',
-                                            description='You need have Git installed [git grep] - https://git-scm.com/docs/git-grep')
-    parser_compare.add_argument('infile', help="Input - path to *.properties file")
-    parser_compare.add_argument('repo_path', help="Repository FULL path")
-    parser_compare.add_argument('--branch', help="Scope lookup to a specific branch - for Git repos only")
-    parser_compare.add_argument('--subdir', help="Scope lookup to a specific sub-directory")
-    parser_compare.add_argument('--filext', help="Filter by file types extensions - comma delimited list ie: java,js,jsp,tld,xml,xsl,vm")
+                                           help='Lookup and locate props keys in source code',
+                                           description='You need have Git installed [git grep] - https://git-scm.com/docs/git-grep')
+    parser_compare.add_argument('infile', help='Input - path to *.properties file')
+    parser_compare.add_argument('repo_path', help='Repository FULL path')
+    parser_compare.add_argument('--branch', help='Scope lookup to a specific branch - for Git repos only')
+    parser_compare.add_argument('--subdir', help='Scope lookup to a specific sub-directory')
+    parser_compare.add_argument('--filext', help='Filter by file types extensions - comma delimited list ie: java,js,jsp,tld,xml,xsl,vm')
     parser_compare.add_argument('--multi', action='store_true', help='Use multiprocessing for lookups')
     parser_compare.add_argument('--notest', action='store_true', help='Exclude /test/ from results')
     group_options = parser_compare.add_mutually_exclusive_group()
@@ -75,7 +75,7 @@ def main():
 
 def props_sort(args):
 
-    print("\n*** Properties sorting ***")
+    print('\n*** Properties sorting ***')
 
     if args.infile:
         parse_file(args.infile, output=args.output,
@@ -95,7 +95,7 @@ def props_sort(args):
 
 def props_compare(args):
 
-    print("\n*** Properties comparing ***")
+    print('\n*** Properties comparing ***')
     print('Input file : ', args.infile_a)
     print('Input file : ', args.infile_b)
 
@@ -137,7 +137,7 @@ def props_compare(args):
 
 def props_locate(args):
 
-    print("\n*** Properties locating ***")
+    print('\n*** Properties locating ***')
 
     try:
         git_version = subprocess.run(['git', '--version'], check=False, capture_output=True, text=True, timeout=5)
@@ -198,14 +198,14 @@ def props_locate(args):
 
     for key, kr in keys_lookup:
         pargs = ['git', 'grep', '-c']
-        #pargs = ['git', 'grep', '-q']
+        # pargs = ['git', 'grep', '-q']
         if args.noindex:
             pargs.append('--no-index')
         elif args.untracked:
             pargs.append('--untracked')
 
         pargs.append(key)
-        #pargs.append(f"\"{key}\"")
+        # pargs.append(f"\"{key}\"")
 
         pargs += pargs_tail
 
@@ -250,7 +250,7 @@ def props_locate(args):
         found_out = []
         found_cnt = 0
 
-        found_out.append(f"### Params: ")
+        found_out.append('### Params: ')
         for key, value in vars(args).items():
             found_out.append(f"# {key}: {value}")
 
@@ -261,7 +261,7 @@ def props_locate(args):
             if ctx:
                 ctx_list = ctx.split('\n')
                 if args.notest:
-                    ctx_list = [item for item in ctx_list if "/test/" not in item]
+                    ctx_list = [item for item in ctx_list if '/test/' not in item]
                 ctx = '\n# '.join(ctx_list)
 
             found_out.append(f"{key_out} \n# Hits: {len(ctx_list)}\n# {ctx}\n")
@@ -274,7 +274,7 @@ def props_locate(args):
         missing_out = []
         missing_cnt = 0
 
-        missing_out.append(f"### Params: ")
+        missing_out.append('### Params: ')
         for key, value in vars(args).items():
             missing_out.append(f"# {key}: {value}")
 
@@ -292,8 +292,8 @@ def props_locate(args):
 
 def grep_repo(key, pargs, cwd_repo):
 
-    #xres = subprocess.run(pargs, cwd=cwd_repo, check=False, capture_output=True)
-    #print(xres)
+    # xres = subprocess.run(pargs, cwd=cwd_repo, check=False, capture_output=True)
+    # print(xres)
 
     try:
         res = subprocess.run(pargs, cwd=cwd_repo, check=True, capture_output=True, text=True, timeout=10)
@@ -474,7 +474,7 @@ def format_grouped_properties(grouped_properties, source_file=None, grouped_comm
                 formatted_lines.append(f"\n## {first_level}.{second_level}")
             for key, value_list in sorted(sub_properties.items()):
                 if len(value_list) > 1:
-                    formatted_lines.append("### DUPLICATE KEY ###")
+                    formatted_lines.append('### DUPLICATE KEY ###')
                     duplicate_keys.append(key)
                 for value in value_list:
                     if grouped_comments:
