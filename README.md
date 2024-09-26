@@ -1,6 +1,6 @@
 # MessyProps
 
-Java properties files can get messy. With **props_check.py** script you can check the properties files.
+Java properties files can get messy. With **[props_check.py](https://github.com/filak/MessyProps/blob/main/props_check.py)** script you can check the properties files.
 
 The script might be useful for:
 - checking for duplicate keys, comparing keys and values, locating keys in a local repository
