@@ -48,15 +48,15 @@ There are 3 commands/actions available:
 
 - in a git repository tree
 
-     $ py props_check.py locate config.properties /messy_project/repo --branch main --subdir src --filext java,jsp,vm
+       $ py props_check.py locate config.properties /messy_project/repo --branch main --subdir src --filext java,jsp,vm
 
 - in a git repository tree - include untracked files
 
-     $ py props_check.py locate config.properties /messy_project/repo --untracked
+       $ py props_check.py locate config.properties /messy_project/repo --untracked
 
 - in any directory
 
-    $ py props_check.py locate config.properties /messy_project/mydir --noindex
+       $ py props_check.py locate config.properties /messy_project/mydir --noindex
 
 > A key is currently being located using **git grep** command - ie:
 
