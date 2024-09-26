@@ -49,5 +49,5 @@ There are 3 commands/actions available:
 
 > A key is currently being located using **git grep** command - ie:
 
-     $ git grep -c "<key>" <branch> -- *.java *.vm 
-     $ git grep -c "<key>" <branch> -- <subdir/>*.java <subdir/>*.vm
+     $ git grep -c <key> <branch> -- *.java *.vm 
+     $ git grep -c <key> <branch> -- <subdir/>*.java <subdir/>*.vm
